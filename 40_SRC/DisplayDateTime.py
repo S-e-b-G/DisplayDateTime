@@ -3,7 +3,7 @@
         Display a small window with date and time.
 
     INSTALLATION :
-        None
+        pip install pyautogui
 
 """
 
@@ -23,6 +23,10 @@ import pyautogui                # Mouse position
 # SECTION
     # Colors
 BACKGD_COLOR = "black"
+
+    # First position
+FIRST_POS_X = 1798
+FIRST_POS_Y = 1034
 
 
 """
@@ -68,6 +72,8 @@ def main():
     time_label.pack(side="top")
     date_label.pack(side="bottom")
 
+    window.geometry("+{}+{}".format(FIRST_POS_X,FIRST_POS_Y))
+        
     # DATE / TIME
     # Update the date and time labels every second
     time_label.config(text=datetime.now().strftime("%H:%M"))
@@ -82,6 +88,7 @@ def main():
         else:
             time_label.config(text=now.strftime("%H:%M"))
 
+        # Set the position
         window.after(1000, update_labels)
 
 
@@ -104,17 +111,26 @@ def main():
         if is_pressed:
             window.pack_propagate(False)
             window.geometry("+{}+{}".format(x, y))
-            print(pyautogui.position())
             window.update()
+
+        # Close the window on Ctrl + Right-click
+    def close_window(event):
+        window.destroy()
+
+
 
     # Handle the Button-1 events
     window.bind("<Button-1>", press_button)
     window.bind("<ButtonRelease-1>", release_button)
+    # Handle the scroll-wheel button event
+    window.bind("<Button-2>", close_window)
     # Handle the mouse movements
     window.bind("<Motion>", move_window)
 
     # Start the update loop
     update_labels()
+
+    ## Display the window
     window.mainloop()
 
 # end main function

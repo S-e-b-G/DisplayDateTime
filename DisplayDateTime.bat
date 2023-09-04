@@ -1,3 +1,4 @@
 cd .\40_SRC
-python AfficheDateHeure.py
-PAUSE
+#START "" /B /MIN DisplayDateTime.py
+start /b DisplayDateTime.py
+REM PAUSE
