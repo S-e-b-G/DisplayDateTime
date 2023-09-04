@@ -10,6 +10,7 @@
 """
     IMPORT SECTION
 """
+import sys                      # To get arguments from program call
 import tkinter as tk            # Graphic windows
 import tkinter.font             # Fonts management
 from datetime import datetime   # Date and time
@@ -25,9 +26,10 @@ import pyautogui                # Mouse position
 BACKGD_COLOR = "black"
 
     # First position
-FIRST_POS_X = 1798
-FIRST_POS_Y = 1034
-
+WIN_WIDTH  = 122
+WIN_HEIGHT =  46
+#1st screen: 1798 1034
+#2nd screen: 5280 1526
 
 """
     GLOBAL VARIABLES
@@ -41,7 +43,7 @@ global is_pressed
     FUNCTIONS DEFINITION
 """
 # main function
-def main():
+def main(pos_x, pos_y):
     global is_pressed, origin_x, origin_y
     is_pressed = False
 
@@ -72,7 +74,7 @@ def main():
     time_label.pack(side="top")
     date_label.pack(side="bottom")
 
-    window.geometry("+{}+{}".format(FIRST_POS_X,FIRST_POS_Y))
+    window.geometry("+{}+{}".format(pos_x,pos_y))
         
     # DATE / TIME
     # Update the date and time labels every second
@@ -111,6 +113,7 @@ def main():
         if is_pressed:
             window.pack_propagate(False)
             window.geometry("+{}+{}".format(x, y))
+            print(x, " ", y)
             window.update()
 
         # Close the window on Ctrl + Right-click
@@ -138,6 +141,12 @@ def main():
 
 # Call to main() function when launching the program:
 if __name__ == "__main__":
-    main()
-
+    try:
+        arg_1 = sys.argv[1]
+        arg_2 = sys.argv[2]
+        print(arg_1," ",arg_2)
+        main(arg_1, arg_2)
+    except IndexError as e:
+        print("No position indicated: place in the center of an HD screen")
+        main(int((1920-WIN_WIDTH)/2), int((1080-WIN_HEIGHT)/2))
 # end of file
