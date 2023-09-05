@@ -37,14 +37,17 @@ WIN_HEIGHT =  46
 # Mouse-button 1 status
 global is_pressed
 
+# Orginal position
+global origPos_x, origPos_y
+
 
 
 """
     FUNCTIONS DEFINITION
 """
 # main function
-def main(pos_x, pos_y):
-    global is_pressed, origin_x, origin_y
+def main():
+    global is_pressed, origPos_x, origPos_y
     is_pressed = False
 
     print("Début du programme")
@@ -74,7 +77,7 @@ def main(pos_x, pos_y):
     time_label.pack(side="top")
     date_label.pack(side="bottom")
 
-    window.geometry("+{}+{}".format(pos_x,pos_y))
+    window.geometry("+{}+{}".format(origPos_x,origPos_y))
         
     # DATE / TIME
     # Update the date and time labels every second
@@ -116,17 +119,22 @@ def main(pos_x, pos_y):
             print(x, " ", y)
             window.update()
 
-        # Close the window on Ctrl + Right-click
+        # Close the window
     def close_window(event):
         window.destroy()
 
+        # Reset position to original position
+    def originalPosition(event):
+        window.geometry("+{}+{}".format(origPos_x,origPos_y))
 
 
-    # Handle the Button-1 events
+    # Handle the left-click events
     window.bind("<Button-1>", press_button)
     window.bind("<ButtonRelease-1>", release_button)
     # Handle the scroll-wheel button event
     window.bind("<Button-2>", close_window)
+    # Handle the right-click event
+    window.bind("<Button-3>", originalPosition)
     # Handle the mouse movements
     window.bind("<Motion>", move_window)
 
@@ -141,12 +149,15 @@ def main(pos_x, pos_y):
 
 # Call to main() function when launching the program:
 if __name__ == "__main__":
+    global origPos_x, origPos_y
     try:
-        arg_1 = sys.argv[1]
-        arg_2 = sys.argv[2]
-        print(arg_1," ",arg_2)
-        main(arg_1, arg_2)
+        origPos_x = sys.argv[1]
+        origPos_y = sys.argv[2]
+        print("Position: ",origPos_x," ",origPos_y)
+        main()
     except IndexError as e:
         print("No position indicated: place in the center of an HD screen")
-        main(int((1920-WIN_WIDTH)/2), int((1080-WIN_HEIGHT)/2))
+        origPos_x = int((1920-WIN_WIDTH)/2)
+        origPos_y = int((1080-WIN_HEIGHT)/2)
+        main()
 # end of file
