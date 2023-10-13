@@ -78,10 +78,12 @@ def main():
     date_label.pack(side="bottom")
 
     window.geometry("+{}+{}".format(origPos_x,origPos_y))
-        
+
     # DATE / TIME
     # Update the date and time labels every second
     time_label.config(text=datetime.now().strftime("%H:%M"))
+
+
     def update_labels():
         now = datetime.now()
         date_label.config(text=now.strftime("%d . %m . %Y"))
