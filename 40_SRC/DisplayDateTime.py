@@ -96,7 +96,7 @@ def main():
             time_label.config(text=now.strftime("%H:%M"))
 
         # Set the position
-        window.after(1000, update_labels)
+        window.after(500, update_labels)
 
 
     # WINDOW MOVEMENT
